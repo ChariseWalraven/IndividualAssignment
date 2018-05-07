@@ -1,4 +1,4 @@
-import {colorPicker} from '../colorPicker' 
+import colorPicker from '../colorPicker' 
 
 describe('colorPicker', () => {
   it('exists', () => {

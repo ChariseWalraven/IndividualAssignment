@@ -4,7 +4,6 @@ import { Student, Teacher, Evaluation } from '../entities'
 import { Batche } from '../entities/batch'
 import { getRepository } from "typeorm";
 import colorPicker from '../logic/colorPicker'
-import * as request from 'superagent'
 
 
 class AuthenticatePayload {
