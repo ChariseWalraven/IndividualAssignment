@@ -1,0 +1,45 @@
+{
+  "name": "server",
+  "version": "1.0.0",
+  "main": "target/index.js",
+  "scripts": {
+    "start": "node .",
+    "watch": "tsc -w",
+    "dev": "nodemon --inspect .",
+    "test": "jest"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "@types/bcrypt": "^2.0.0",
+    "@types/koa": "^2.0.45",
+    "@types/koa-bodyparser": "^4.2.0",
+    "@types/koa-multer": "^1.0.0",
+    "@types/koa-router": "^7.0.28",
+    "@types/node": "^10.0.4",
+    "bcrypt": "^2.0.1",
+    "jest": "^22.4.3",
+    "jsonwebtoken": "^8.2.1",
+    "koa": "^2.5.1",
+    "koa-bodyparser": "^4.2.0",
+    "koa-multer": "^1.0.2",
+    "koa-router": "^7.4.0",
+    "nodemon": "^1.17.4",
+    "pg": "^7.4.2",
+    "routing-controllers": "^0.7.7",
+    "superagent": "^3.8.3",
+    "ts-jest": "^22.4.5",
+    "typeorm": "^0.2.5",
+    "typescript": "^2.8.3"
+  },
+  "jest": {
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js"
+    ],
+    "transform": {
+      "\\.(ts|tsx)$": "<rootDir>/node_modules/ts-jest/preprocessor.js"
+    },
+    "testRegex": "/__tests__/.*\\.(ts|tsx|js)$"
+  }
+}
