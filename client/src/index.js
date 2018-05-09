@@ -3,6 +3,29 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import registerServiceWorker from './registerServiceWorker';
+import { Provider } from 'react-redux'
+import store from './store'
+import CssBaseline from 'material-ui/CssBaseline';
+import { MuiThemeProvider, createMuiTheme } from 'material-ui/styles';
+import teal from 'material-ui/colors/teal'
+import yellow from 'material-ui/colors/purple'
 
-ReactDOM.render(<App />, document.getElementById('root'));
+const theme = createMuiTheme({
+  palette: {
+    type: 'light',
+    primary: teal,
+    secondary: yellow,
+    accent: yellow[200],
+  },
+})
+
+ReactDOM.render(
+  <Provider store={store}>
+    <CssBaseline>
+      <MuiThemeProvider theme={theme}>
+        <App />
+      </MuiThemeProvider>
+    </CssBaseline>
+  </Provider>
+, document.getElementById('root'));
 registerServiceWorker();

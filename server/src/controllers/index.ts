@@ -4,7 +4,8 @@ import { Student, Teacher, Evaluation } from '../entities'
 import { Batche } from '../entities/batch'
 import { getRepository } from "typeorm";
 import colorPicker from '../logic/colorPicker'
-
+import calculatePercentage from '../logic/calculatePercentage';
+import { sign } from '../jwt'
 
 class AuthenticatePayload {
   @IsString()
@@ -27,8 +28,9 @@ export class StudentController {
   async createStudent(
     @Body() student: Student
   ) {
-    const { ...info } = student
+    const { id, ...info } = student
     const entity = Student.create(info)
+    entity.batch = await Batche.findOne({where: {number: id}})
     return entity.save()
   }
 
@@ -38,6 +40,24 @@ export class StudentController {
   ) {
     const student = await Student.findOne(id)
     return { student }
+  }
+
+  // gets all evaluations associated with a student
+  @Get('/students/:id/evaluations')
+  async getEvals(
+    @Param('id') id: number
+  ) {
+    //get all evaluations associated with a student
+    const studentEvaluations = await getRepository(Evaluation)
+      .createQueryBuilder('evaluations')
+      .select()
+      .where("evaluations.student_id = :id",{id})
+      .getMany()
+
+      //return evlauations and percentage of colors
+      let obj = {studentEvaluations}
+      let percentage = await calculatePercentage(obj)
+      return {studentEvaluations, percentage }
   }
 
   @Put('/students/:id')
@@ -91,7 +111,8 @@ export class TeacherController {
 
     if (!await teacher.checkPassword(password)) throw new BadRequestError('The password is not correct')
 
-    return { teacher }
+    const jwt = sign({ id: teacher.id! })
+    return { jwt, teacher }
 
   }
 
@@ -112,7 +133,9 @@ export class BatchController {
   ) {
     const { ...rest } = batch
     const entity = Batche.create(rest)
-    return entity.save()
+    entity.save()
+
+    return entity
   }
 
   @Get('/batches/:id')
@@ -122,6 +145,32 @@ export class BatchController {
     const batch = await Batche.findOne(id)
     return { batch }
   }
+
+  // gets all students associated with this one batch
+  @Get('/batches/:id/students')
+  async students(
+    @Param('id') id: number
+  ) {
+    const students = await getRepository(Student)
+      .createQueryBuilder("student")
+      .select()
+      .where("student.batch_id = :id", { id })
+      .getMany()
+      
+      //get all evaluations from all students in this batch
+    const studentEvaluations = await getRepository(Evaluation)
+      .createQueryBuilder("evaluation")
+      .select()
+      .where("evaluation.batch_id = :id", {id})
+      .getMany()
+
+      let obj = {studentEvaluations}
+      let percentages = await calculatePercentage(obj)
+
+    return { students, percentages }
+  }
+
+
 }
 
 @JsonController()
@@ -137,9 +186,25 @@ export class EvaluationController {
   async createEvaluation(
     @Body() evaluation: Evaluation
   ) {
-    const { ...rest } = evaluation
+    const { id, ...rest } = evaluation
     const entity = Evaluation.create(rest)
+    entity.student = await Student.findOne(id) // dunno how to get this to go away
+    entity.batch = await Batche.findOne(entity.student.batch.id) // or this...
     await entity.getDate()
+    const last = await getRepository(Evaluation)
+      .createQueryBuilder("evaluation")
+      .select('evaluation.date')
+      .where('evaluation.student_id = :id', { id: evaluation.id })
+      .orderBy({
+        "date": "DESC"
+      })
+      .getOne()
+
+    let today = new Date().toJSON().slice(0, 10)
+    let date = Object.values(last)[0] // or this...
+
+    if (date === today) throw new Error('Cannot evaluate a student more than once a day. Please edit your last evaluation instead')
+      // return {entity}
     return entity.save()
   }
 

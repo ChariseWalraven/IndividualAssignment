@@ -1,7 +1,6 @@
 import { Entity, PrimaryGeneratedColumn, Column, OneToMany, JoinColumn } from 'typeorm'
 import { BaseEntity } from 'typeorm/repository/BaseEntity'
-import { IsDate } from 'class-validator'
-import {Student} from './index'
+import {Student, Evaluation} from './index'
 
 @Entity()
 export class Batche extends BaseEntity {
@@ -9,18 +8,23 @@ export class Batche extends BaseEntity {
   @PrimaryGeneratedColumn()
   id?: number
 
+  @Column('int')
+  number: number
+
   @Column('text')
-  nickname: string
+  fullName: string
 
-  @IsDate()
   @Column('date')
-  startDate: Date
+  startDate: string
 
-  @IsDate()
   @Column('date')
-  endDate: Date
+  endDate: string
 
   @OneToMany(_ => Student, student => student.batch)
   @JoinColumn()
   students: Student[]
+
+  @OneToMany(_ => Evaluation, evaluation => evaluation.batch)
+  @JoinColumn()
+  evaluations: Evaluation[]
 }
