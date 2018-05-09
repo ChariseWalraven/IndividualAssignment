@@ -4,6 +4,8 @@ import LoginPage from './components/login/LoginPage'
 import SignupPage from './components/signup/SignupPage'
 import LogoutPage from './components/logout/LogoutPage'
 import BatchesPage from './components/batches/BatchesPage.jsx'
+import EvaluationPage from './components/evaluations/EvaluationPage';
+import StudentsPage from './components/students/StudentsPage'
 import TopBar from './components/TopBar'
 import Typography from 'material-ui/Typography'
 import withTheme from 'material-ui/styles/withTheme'
@@ -23,6 +25,9 @@ class App extends Component {
             <Route exact path="/signup" component={SignupPage} />
             <Route exact path="/logout" component={LogoutPage} />
             <Route exact path='/batches' component={BatchesPage} />
+            <Route exact path='/students' component={StudentsPage} />
+            <Route exact path='/students/:id' component={EvaluationPage} />
+            <Route exact path='/batches/:id' component={StudentsPage} />
             <Route exact path="/" render={() => <Redirect to="/login" />} />
           </Typography>
           </main>

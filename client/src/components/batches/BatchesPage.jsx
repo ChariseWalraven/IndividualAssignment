@@ -2,8 +2,8 @@ import React, { PureComponent } from 'react'
 import BatchCard from './BatchCard'
 import { Grid, GridList, GridListTile, Paper, Button, FormGroup, GridListTileBar, Tooltip } from 'material-ui';
 import { connect } from 'react-redux';
-import {fetchBatches, createBatch, fetchStudents} from '../../actions/batches'
-import AddIcon from '@material-ui/icons/Add';
+import {fetchBatches, createBatch, fetchStudents, fetchBatchStudents, fetchBatch} from '../../actions/batches'
+import GroupAddIcon from '@material-ui/icons/GroupAdd';
 import DoneIcon from '@material-ui/icons/Done';
 import ClearIcon from '@material-ui/icons/Clear';
 import TextField from 'material-ui/TextField';
@@ -14,21 +14,24 @@ import Dialog, {
   DialogTitle,
 } from 'material-ui/Dialog';
 import {Link} from 'react-router-dom'
-import store from '../../store'
 
 
 class BatchesPage extends PureComponent {
   state = {
     open: false,
+    id: Number(window.location.pathname.slice(9))
   }
-
+  
   componentWillMount(){
     //fetch batches
     if(this.props.authenticated){
-      if (this.props.batches === null) this.props.fetchBatches()
-      if(this.props.students === null) this.props.fetchStudents()
+        // this.props.fetchBatch(this.state.id)
+      if (this.props.batches === null) {
+        this.props.fetchBatches()
+      }
     }
   }
+
   handleClickOpen = () => {
     this.setState({ open: true });
   };
@@ -44,23 +47,25 @@ class BatchesPage extends PureComponent {
   handleSubmit = (e) => {
     e.preventDefault()
     // //create batch
-    // console.log(this.state)
       this.props.createBatch(this.state)
+  }
+  handleClick = (e, b) => {
+    console.log(b)
+    this.props.fetchBatchStudents(b.id)
   }
   render() {
     const {batches} = this.props
-    console.log(this.state)
     if(batches === null) return null
     return (
       <div>
       <Grid style={{ flexGrow: 1, display: 'inline'}} direction={`row`} justify={`center`} alignItems={`center`} container spacing={12}>
         <GridList cellheight={120} cols={3} style={{ margin: '0 0 0 50px'}}>
-            {batches.map((b) => BatchCard(b))}
+            {batches.map((b) => <Button onClick={(e) => this.handleClick(e, b)}>{BatchCard(b)}</Button>)}
             <Grid item>
           <Button variant='fab' color='secondary' 
           style={{position: "absolute", bottom: 20, right: 20}}
           onClick={this.handleClickOpen}>
-            <AddIcon />
+            <GroupAddIcon />
           </Button>
           </Grid>
           </ GridList> 
@@ -71,14 +76,14 @@ class BatchesPage extends PureComponent {
         aria-labelledby="form-dialog-title"
       >
           <form onSubmit={this.handleSubmit}>
-        <DialogTitle id="form-dialog-title">Create Batch</DialogTitle>
+        <DialogTitle id="form-dialog-title">Add Batch</DialogTitle>
         <DialogContent>
           <DialogContentText>
             {/* Please Fill In the Batch Number, nickname, start date and end date */}
           </DialogContentText>
           <TextField
             margin="normal"
-            name="fullName"
+            name="nickname"
             label="Nickname"
             helperText='Because numbers are boring and hard to remember'
             required
@@ -138,7 +143,8 @@ class BatchesPage extends PureComponent {
 const mapStateToProps = (state) => ({
   authenticated: state.currentUser!==null,
   batches: state.batches === null ? null : state.batches.sort(((a,b)=> a.id - b.id)),
-  students: state.students
+  batch: state.batch === null ? null : state.batch,
+  students: state.students === null ? null : state.students.sort(((a, b) => a.id - b.id)),
 })
 
-export default connect(mapStateToProps, {fetchBatches, createBatch, fetchStudents})(BatchesPage)
+export default connect(mapStateToProps, {fetchBatches, createBatch, fetchStudents, fetchBatchStudents, fetchBatch})(BatchesPage)

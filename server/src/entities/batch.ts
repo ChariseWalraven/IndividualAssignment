@@ -12,7 +12,7 @@ export class Batche extends BaseEntity {
   number: number
 
   @Column('text')
-  fullName: string
+  nickname: string
 
   @Column('date')
   startDate: string
@@ -27,4 +27,7 @@ export class Batche extends BaseEntity {
   @OneToMany(_ => Evaluation, evaluation => evaluation.batch)
   @JoinColumn()
   evaluations: Evaluation[]
+
+  @Column('int', {default: 0})
+  numberOfStudents: number
 }

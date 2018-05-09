@@ -8,14 +8,13 @@ import store from './store'
 import CssBaseline from 'material-ui/CssBaseline';
 import { MuiThemeProvider, createMuiTheme } from 'material-ui/styles';
 import teal from 'material-ui/colors/teal'
-import yellow from 'material-ui/colors/purple'
+import purple from 'material-ui/colors/purple'
 
 const theme = createMuiTheme({
   palette: {
     type: 'light',
     primary: teal,
-    secondary: yellow,
-    accent: yellow[200],
+    secondary: purple,
   },
 })
 

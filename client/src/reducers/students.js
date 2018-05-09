@@ -1,8 +1,11 @@
-import {FETCH_STUDENTS, ADD_STUDENT} from '../actions/batches'
+import {FETCH_STUDENTS, ADD_STUDENT, FETCH_BATCH_STUDENTS} from '../actions/batches'
 
 export default function(state = null, {type, payload}){
   switch(type){
     case FETCH_STUDENTS:
+    return payload
+
+    case FETCH_BATCH_STUDENTS:
     return payload
 
     case ADD_STUDENT:
