@@ -6,7 +6,7 @@ export default function(state = null, {type, payload}){
     return payload
 
     case FETCH_BATCH_STUDENTS:
-    return payload
+    return payload.students
 
     case ADD_STUDENT:
     return state.concat(payload)

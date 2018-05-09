@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react'
 import StudentsCard from './StudentsCard.jsx'
 import { Grid, GridList, GridListTile, Paper, Button, FormGroup, GridListTileBar, Tooltip } from 'material-ui';
 import { connect } from 'react-redux';
-import { fetchBatchStudents, fetchStudents, createStudent } from '../../actions/batches'
+import { fetchBatchStudents, fetchStudents, createStudent, fetchStudent } from '../../actions/batches'
 import PersonAddIcon from '@material-ui/icons/PersonAdd';
 import DoneIcon from '@material-ui/icons/Done';
 import ClearIcon from '@material-ui/icons/Clear';
@@ -59,7 +59,7 @@ class StudentsPage extends PureComponent {
       <div>
         <Grid style={{ flexGrow: 1, display: 'inline' }} direction='row' justify={`center`} alignItems={`center`} container >
           <GridList cols={3} style={{ margin: '0 0 0 50px', height: 600 }} spacing={16}>
-            {students.map((s) => StudentsCard(s))}
+            {students.map((s) => <StudentsCard student={s} />)}
             </ GridList>
 
             <Grid item>
@@ -122,7 +122,8 @@ class StudentsPage extends PureComponent {
 
 const mapStateToProps = (state) => ({
   authenticated: state.currentUser !== null,
-  students: state.students == null ? null : state.students.sort(((a, b) => a.id - b.id))
+  students: state.students == null ? null : state.students.sort(((a, b) => a.id - b.id)),
+  student: state.student
 })
 
-export default connect(mapStateToProps, { fetchBatchStudents, fetchStudents, createStudent })(StudentsPage)
+export default connect(mapStateToProps, { fetchBatchStudents, fetchStudents, createStudent, fetchStudent })(StudentsPage)

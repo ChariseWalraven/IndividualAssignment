@@ -6,6 +6,7 @@ import batches from './batches'
 import batch from './batch'
 import students from './students'
 import student from './student'
+import percentages from './percentages'
 
 export default {
   users,
@@ -15,5 +16,6 @@ export default {
   batches,
   batch,
   students,
-  student
+  student,
+  percentages
 }

@@ -30,7 +30,7 @@ export class StudentController {
   ) {
     const { id, ...info } = student
     const entity = Student.create(info)
-    entity.batch = await Batche.findOne({where: {batch: id}})
+    entity.batch = await Batche.findOne({where: {id}})
     return entity.save()
   }
 

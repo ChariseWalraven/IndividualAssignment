@@ -11,34 +11,25 @@ import red from 'material-ui/colors/red'
 const g = green[500]
 const y = yellow[500]
 const r = red[400]
-const id = Number(window.location.pathname.slice(10))
 
 class EvaluationPage extends PureComponent {
+  state = {}
   handleSubmit = (data) => {
-    this.props.postSignup(data.email, data.password)
+    // this.props.postSignup(data.email, data.password)
   }
-
-  componentWillMount() {
-    //get id from window location
-    if(this.props.authenticated) {
-      if(this.props.student === null){
-        this.props.fetchStudent(id)
-      }
-    }
-
-    setTimeout(_=> {
-    }, 800)
-  }
-
+  
   render() {
+    const id = Number(window.location.pathname.slice(10)) - 1
+    console.log(this.props)
+    const student = this.props.students[id]
     return (
       <Grid container direction={`row`} justify={"center"} style={{ width: "70%", margin: "0 auto" }} alignItems={`flex-start`}>
         <Grid item xs={12}>
-          <Typography variant='display1'>Jane Doe</Typography>
+          <Typography variant='display1'>{student.fullName}</Typography>
         </Grid >
         <Grid item xs={6}>
           <img src='https://cdn.vectorstock.com/i/thumb-large/98/21/woman-girl-female-hair-person-face-head-icon-vector-10189821.jpg'/>
-          <Typography variant='headline'>Batch #{4}</Typography>
+          <Typography variant='headline'>Batch #{2}</Typography>
 
         </Grid>
         <Grid item xs={6}>
@@ -62,7 +53,7 @@ class EvaluationPage extends PureComponent {
 const mapStateToProps = function (state) {
   return {
     authenticated: state.currentUser !== null,
-    student: state.student === null ? null : state.student
+    students: state.students
   }
 }
 

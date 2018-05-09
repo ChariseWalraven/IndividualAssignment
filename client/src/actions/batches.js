@@ -98,7 +98,7 @@ export const fetchBatchStudents = (id) => (dispatch, getState) => {
     .set('Authorization', `Bearer ${jwt}`)
     .then(res => dispatch({
       type: FETCH_BATCH_STUDENTS,
-      payload: res.body.students
+      payload: res.body
     }))
     .catch(err => console.error(err))
 }

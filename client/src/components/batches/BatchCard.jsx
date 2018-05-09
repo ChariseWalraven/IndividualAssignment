@@ -11,9 +11,10 @@ const BatchCard = ({ ...props }) => {
   return (
     <Link className='batch-card' to={`/batches/${props.id}`}>
     <GridListTile>
-        <Typography variant='title'>{props.nickname}</ Typography >
-        <Typography variant='subheading'>{`Batch #${props.number}`}</Typography>
-        <Typography variant='subheading'>{`Student Number`}</Typography>
+        <Typography gutterBottom variant='display1'>{props.nickname}</ Typography >
+        <Typography variant='title'>{`Batch #${props.number}`}</Typography>
+        <Typography gutterBottom variant='subheading'>{`Student Number`}</Typography>
+        <Typography variant='caption'>{props.startDate} to {props.endDate}</Typography>
     </GridListTile>
     </Link>
   )

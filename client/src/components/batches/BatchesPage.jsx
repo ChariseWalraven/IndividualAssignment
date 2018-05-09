@@ -60,7 +60,7 @@ class BatchesPage extends PureComponent {
       <div>
       <Grid style={{ flexGrow: 1, display: 'inline'}} direction={`row`} justify={`center`} alignItems={`center`} container spacing={12}>
         <GridList cellheight={120} cols={3} style={{ margin: '0 0 0 50px'}}>
-            {batches.map((b) => <Button onClick={(e) => this.handleClick(e, b)}>{BatchCard(b)}</Button>)}
+            {batches.map((b) => <Button style={{ width: 275, height: 275}} onClick={(e) => this.handleClick(e, b)}>{BatchCard(b)}</Button>)}
             <Grid item>
           <Button variant='fab' color='secondary' 
           style={{position: "absolute", bottom: 20, right: 20}}
