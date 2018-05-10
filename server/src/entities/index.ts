@@ -49,7 +49,7 @@ export class Student extends BaseEntity {
   /*
   note: I know that it's TypeORM convention to use 'type', but my linter complains that I'm not using the argument. 
   */
-  @OneToMany(_ => Evaluation, evaluation => evaluation.student)
+  @OneToMany(_ => Evaluation, evaluation => evaluation.student, {eager: true})
   @JoinColumn()
   evaluations: Evaluation[] 
 
@@ -64,7 +64,7 @@ export class Evaluation extends BaseEntity {
   @PrimaryGeneratedColumn()
   id?: number
 
-  @ManyToOne(_ => Student, student => student.evaluations, { eager: true, nullable: false})
+  @ManyToOne(_ => Student, student => student.evaluations, { nullable: false})
   @JoinColumn()
   student: Student
 

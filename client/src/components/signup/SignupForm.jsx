@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react'
-import { Paper, TextField, Button } from 'material-ui';
+import {TextField, Button} from 'material-ui'
 
 export default class SignupForm extends PureComponent {
   state = {}

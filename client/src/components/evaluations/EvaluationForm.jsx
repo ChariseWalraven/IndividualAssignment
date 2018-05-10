@@ -1,27 +1,25 @@
 import React, { PureComponent } from 'react'
-import { Paper, TextField, Button, FormControl } from 'material-ui';
-// get student by id,
-// render form for particular student
+import { TextField, Button, Typography } from 'material-ui';
 import green from 'material-ui/colors/green'
 import yellow from 'material-ui/colors/yellow'
 import red from 'material-ui/colors/red'
 
-const g = green[500]
-const y = yellow[500]
-const r = red[400]
-
-
 export default class EvaluationForm extends PureComponent {
-  state = {}
+  state = { }
 
+  next = () => {
+
+  }
+  
   handleSubmit = (e) => {
     e.preventDefault()
+    // submit form
     this.props.onSubmit(this.state)
   }
 
+
   handleChange = (event) => {
     const { name, value } = event.target
-
     this.setState({
       [name]: value
     })
@@ -31,9 +29,21 @@ export default class EvaluationForm extends PureComponent {
     return (
       <form onSubmit={this.handleSubmit}>
         <div>
-          <Button value='green' variant='fab' mini style={{'background-color': g, margin: 5}}/>
-          <Button value='yellow' variant='fab' mini style={{'background-color': y, margin: 5}}/>
-          <Button value='red' variant='fab' mini style={{'background-color': r, margin: 5}}/>
+          {/* on click, set color to value */}
+          <Typography variant='caption'>
+            Chosen Color: <span style={{color: this.state.color}}>{this.state.color}</span>
+          </Typography>
+            <div>
+            <Button value='green' name='color'
+            variant='fab' mini onClick={this.handleChange}
+              style={{ backgroundColor: green[500], margin: 5}}/>
+            <Button value='yellow' name='color'
+            variant='fab' mini onClick={this.handleChange}
+              style={{ backgroundColor: yellow[500], margin: 5}}/>
+            <Button value='red' name='color'
+            variant='fab' mini onClick={this.handleChange}
+             style={{ backgroundColor: red[400], margin: 5}}/>
+            </div>
         </div>
         <div>
           <TextField 
@@ -47,23 +57,16 @@ export default class EvaluationForm extends PureComponent {
         <div>
           <TextField fullWidth
             label="Remarks"
-            type="email"
-            name="email"
-            id="email"
+            type="text"
+            name="remarks"
+            id="remarks"
             value={
-              this.state.email || ''
+              this.state.remarks || ''
             } onChange={this.handleChange} />
         </div>
 
-        {
-          this.state.password &&
-          this.state.confirmPassword &&
-          this.state.password !== this.state.confirmPassword &&
-          <p style={{ color: 'red' }}>The passwords do not match!</p>
-        }
-
-        <Button style={{left: '65%'}} color="primary">Save</Button>
-        <Button style={{left: '65%'}} color="secondary">Save And Next</Button>
+        <Button style={{left: '45%'}} type='submit' color="primary">Save</Button>
+        <Button style={{ left: '45%' }} type='submit' color="secondary">Save And Next</Button>
       </form>
     )
   }

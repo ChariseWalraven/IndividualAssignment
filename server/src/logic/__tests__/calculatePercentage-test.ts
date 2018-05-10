@@ -35,17 +35,19 @@ const studentEvals = {
       }
     ]
 }
+const noStudentEvals = {
+  studentEvaluations:[]
+}
 
 describe('calculatePercentage', () => {
   it('exists', () => {
     expect(calculatePercentage(studentEvals)).toBeDefined()
-
   })
   it('returns an object', () => {
     expect(typeof calculatePercentage(studentEvals)).toEqual('object')
   })
   it('returns the correct percentage', () => {
-
     expect(calculatePercentage(studentEvals)).toEqual({ "green": "40%", "red": "40%", "yellow": "20%" })
+    expect(calculatePercentage(noStudentEvals)).toEqual({ "green": "0%", "red": "0%", "yellow": "0%" })
   })
 })

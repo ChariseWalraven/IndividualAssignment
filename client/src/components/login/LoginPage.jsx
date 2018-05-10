@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { login } from '../../actions/users'
 import LoginForm from './LoginForm'
 import { Redirect } from 'react-router-dom'
-import { Paper, Grid } from 'material-ui';
+import { Grid } from 'material-ui';
 
 class LoginPage extends PureComponent {
   handleSubmit = (data) => {

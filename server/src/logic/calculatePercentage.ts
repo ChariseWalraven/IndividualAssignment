@@ -13,6 +13,8 @@ const calculatePercentage = (obj) => {
   green = (100 / obj.studentEvaluations.length) * green
   // let total = yellow + red + green 
 
+  if (obj.studentEvaluations.length === 0) return { yellow: `0%`, green: `0%`, red: `0%` }
+
   return { yellow: `${String(yellow).slice(0, 4)}%`, green: `${String(green).slice(0, 4)}%`, red: `${String(red).slice(0, 4)}%`}
 
 }

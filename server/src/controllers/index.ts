@@ -2,10 +2,13 @@ import { JsonController, Get, Param, Put, Body, Post, Delete, NotFoundError, Bad
 import { IsString } from 'class-validator'
 import { Student, Teacher, Evaluation } from '../entities'
 import { Batche } from '../entities/batch'
-import { getRepository } from "typeorm";
+import { getRepository, Not } from "typeorm";
 import colorPicker from '../logic/colorPicker'
 import calculatePercentage from '../logic/calculatePercentage';
 import { sign } from '../jwt'
+import * as request from "superagent";
+import { getConnection } from "typeorm";
+
 
 class AuthenticatePayload {
   @IsString()
@@ -58,6 +61,20 @@ export class StudentController {
       let obj = {studentEvaluations}
       let percentage = await calculatePercentage(obj)
       return {studentEvaluations, percentage }
+  }
+
+  @Post('/students/:id/evaluations')
+  async createEvaluation(
+    @Param('id') id: number,
+    @Body() evaluation: Evaluation
+  ){
+    const {color, remarks, date} = evaluation
+    const entity = await Evaluation.create({color, remarks, date})
+    entity.student = await Student.findOne({where: {id}})
+    entity.batch = entity.student.batch
+    entity.save()
+
+    return {entity}
   }
 
   @Put('/students/:id')
@@ -143,6 +160,9 @@ export class BatchController {
     @Param('id') id: number
   ) {
     const batch = await Batche.findOne(id)
+    if(!batch) throw new NotFoundError('Batch not found!')
+    await batch.countStudents()
+    batch.save()
     return { batch }
   }
 
@@ -151,11 +171,9 @@ export class BatchController {
   async students(
     @Param('id') id: number
   ) {
-    const students = await getRepository(Student)
-      .createQueryBuilder("student")
-      .select()
-      .where("student.batch_id = :id", { id })
-      .getMany()
+    const students = await Student.find({where: {batch : id}})
+    if (!students) throw new NotFoundError('There are no students in this batch!')
+
       
       //get all evaluations from all students in this batch
     const studentEvaluations = await getRepository(Evaluation)
@@ -164,12 +182,21 @@ export class BatchController {
       .where("evaluation.batch_id = :id", {id})
       .getMany()
 
-      let obj = {studentEvaluations}
-      let percentages = await calculatePercentage(obj)
+      const obj = {studentEvaluations}
+      const percentages = await calculatePercentage(obj)
 
     return { students, percentages }
   }
 
+  @Get('/batches/:id/evaluations')
+  async getEvaluations(
+    @Param('id') id: number
+  ){
+    const evaluations = await Evaluation.find({where: {batch: id}})
+    if(!evaluations) throw new NotFoundError('This batch has no evaluations!')
+
+    return {evaluations}
+  }
 
 }
 
@@ -232,7 +259,6 @@ export class EvaluationController {
 export class QuestionController {
   @Get('/question')
   async getQuestion() {
-
     const student = await getRepository(Evaluation)
       .createQueryBuilder("evaluation")
       .select('evaluation.student_id')

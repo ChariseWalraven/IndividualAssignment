@@ -1,4 +1,4 @@
-import { Entity, PrimaryGeneratedColumn, Column, OneToMany, JoinColumn } from 'typeorm'
+import { Entity, PrimaryGeneratedColumn, Column, OneToMany, JoinColumn, getRepository } from 'typeorm'
 import { BaseEntity } from 'typeorm/repository/BaseEntity'
 import {Student, Evaluation} from './index'
 
@@ -28,6 +28,18 @@ export class Batche extends BaseEntity {
   @JoinColumn()
   evaluations: Evaluation[]
 
-  @Column('int', {default: 0})
+
+  @Column('int', {default:0})
   numberOfStudents: number
+
+  async countStudents(){
+  // get repo, count students where batch = id
+  const students = await getRepository(Student)
+  .createQueryBuilder('student')
+  .select()
+  .where('student.batch = :id', {id: this.id})
+  .getCount()
+
+  this.numberOfStudents = students
+  }
 }

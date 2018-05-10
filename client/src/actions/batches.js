@@ -13,6 +13,10 @@ export const FETCH_STUDENT_EVALUATIONS = "FETCH_STUDENT_EVALUATIONS"
 export const FETCH_STUDENT = "FETCH_STUDENT"
 export const FETCH_BATCH_STUDENTS = "FETCH_BATCH_STUDENTS"
 
+export const SUBMIT_EVALUATION = "SUBMIT_EVALUATION"
+export const FETCH_BATCH_EVALUATIONS = "FETCH_BATCH_EVALUATIONS"
+
+
 export const addBatch = batch => ({
   type: ADD_BATCH,
   payload: batch
@@ -53,8 +57,7 @@ export const fetchBatch = (id) => (dispatch, getState) => {
 export const createBatch = (batch) => (dispatch, getState) => {
   const state = getState()
   const jwt = state.currentUser.jwt
-  // const {nickname, startDate, endDate} = batch
-  // if (isExpired(jwt)) return dispatch(logout())
+  if (isExpired(jwt)) return dispatch(logout())
 
   request
     .post(`${baseUrl}/batches`)
@@ -103,12 +106,27 @@ export const fetchBatchStudents = (id) => (dispatch, getState) => {
     .catch(err => console.error(err))
 }
 
+export const fetchBatchEvaluations = (id) => (dispatch, getState) => {
+  const state = getState()
+  const jwt = state.currentUser.jwt
+  request
+    .get(`${baseUrl}/batches/${id}/evaluations`)
+    .set('Authorization', `Bearer ${jwt}`)
+    .then(res => dispatch({
+      type: FETCH_BATCH_EVALUATIONS,
+      payload: res.body.evaluations
+    }))
+    .catch(err => console.error(err))
+}
+
 export const createStudent = (student, id) => (dispatch, getState) => {
   const state = getState()
   const jwt = state.currentUser.jwt
-  console.log(student)
+  // if (isExpired(jwt)) return dispatch(logout())
+
   request
     .post(`${baseUrl}/students`)
+    .set('Authorization', `Bearer ${jwt}`)
     .send(student)
     .then(res => dispatch(addStudent(student)))
     .catch(err => console.error(err))
@@ -125,4 +143,17 @@ export const fetchStudentEvaluations = (id) => (dispatch, getState) => {
       type: FETCH_STUDENT_EVALUATIONS,
       payload: res.body
     }))
+}
+
+export const submitEvaluation = (id, data) => (dispatch, getState) => {
+  const state = getState()
+  const jwt = state.currentUser.jwt
+  request
+  .post(`${baseUrl}/students/${id}/evaluations`)
+  .set('Authorization', `Bearer ${jwt}`)
+  .send(data)
+  .then(res => dispatch({
+    type: SUBMIT_EVALUATION,
+    payload: res.body
+  }))
 }

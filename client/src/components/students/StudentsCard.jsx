@@ -1,37 +1,35 @@
 import React, {PureComponent} from "react"
-import Card, { CardActions, CardContent, CardHeader } from 'material-ui/Card';
 import Paper from 'material-ui/Paper'
-import { Typography, Grid, GridListTile, Button, Tooltip } from "material-ui";
+import { Typography, GridListTile, IconButton } from "material-ui";
 import Avatar from 'material-ui/Avatar';
 import '../batches/BatchCard.css'
-import CreateIcon from '@material-ui/icons/Create'
-import red from 'material-ui/colors/red'
-import green from 'material-ui/colors/green'
-import yellow from 'material-ui/colors/yellow'
+import DeleteIcon from '@material-ui/icons/Delete'
 import { Link } from 'react-router-dom'
 
-const g = green[300]
-
 class StudentsCard extends PureComponent {
-  constructor(...props) {
-    super(...props)
-  }
-  
   render() {
-    console.log(this.props)
+    let color ='rbga(0,0,0,0)'
     const {student} = this.props
+    if(student.evaluations){
+      if(student.evaluations.length !== 0 || student.evaluations[0]){
+         color = student.evaluations[0].color
+      }
+    }
     return (
-      <GridListTile style={{ height: 350 }}>
+      <GridListTile style={{ height: 375 }}>
+          <Paper elevation={4} style={{ textAlign: 'center', height: 340, padding: 10 }}>
+          <IconButton variant='fab' aria-label="Delete" elevation={0}
+        style={{ position: 'relative', right: '35%'}}>
+        <DeleteIcon/>
+        </IconButton>
         <Link to={`/students/${student.id}`} className={'batch-card'}>
-          <Paper elevation={4} style={{ textAlign: 'center', height: 330, padding: 20 }}>
             <Typography variant='title'>{student.fullName}</ Typography >
             <Avatar src={student.photo} style={{ margin: 'auto', width: 200, height: 200 }} />
             <Typography variant='subheading'>{`Last Evaluation:`}
-              <Button variant='fab' mini
-                style={{ position: "relative", 'background-color': g, left: 10 }}
-              ></Button></Typography>
-          </Paper>
+              <div style={{ position: "relative", backgroundColor: color, bottom: 30, left: '85%', width: 30, height: 30, borderRadius: 50 }}
+              /></Typography>
         </Link>
+          </Paper>
       </GridListTile>
 
     )

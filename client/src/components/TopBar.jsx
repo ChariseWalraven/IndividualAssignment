@@ -7,7 +7,7 @@ import { withRouter } from 'react-router'
 import { Link } from 'react-router-dom'
 import { userId } from '../jwt'
 import { connect } from 'react-redux'
-
+import MySvg from './MySvg'
 
 const TopBar = (props) => {
   const { location, history, user } = props
@@ -15,6 +15,7 @@ const TopBar = (props) => {
   return (
     <AppBar position="absolute" elevation={4}>
       <Toolbar>
+        {MySvg()}
         <Typography variant="title" color="inherit" style={{ flex: 1 }}>
           Evaluation Tool
         </Typography>
@@ -37,15 +38,21 @@ const TopBar = (props) => {
         }
         {
           location.pathname.indexOf('batches/') > 0 &&
-          <Button color="inherit" onClick={() => history.push('/batches')}>All Batches</Button>
+          <div>
+            <div>
+            <Button color="inherit" onClick={() => history.push('/batches')}>All Batches</Button>
+            </div>
+          </div>
         }
         {
           location.pathname.indexOf('students/') > 0 &&
-          <Button color="inherit" onClick={() => history.push('/students')}>All Students</Button>
+          <Button color="inherit" onClick={() => history.push('/batches/')}>All Batches</Button>
         }
         {
           /batches$/.test(location.pathname) &&
+          <div>
           <Button color="inherit" onClick={() => history.push('/logout')}>Log out</Button>
+          </div>
         }
         {
           /students$/.test(location.pathname) &&

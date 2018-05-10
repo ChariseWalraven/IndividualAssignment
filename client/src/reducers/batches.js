@@ -1,4 +1,4 @@
-import {FETCH_BATCHES, CREATE_BATCH, ADD_BATCH, FETCH_STUDENTS} from '../actions/batches'
+import {FETCH_BATCHES, ADD_BATCH} from '../actions/batches'
 
 export default function(state = null, {type, payload}){
   switch(type){

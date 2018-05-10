@@ -1,8 +1,8 @@
 import React, { PureComponent } from 'react'
 import BatchCard from './BatchCard'
-import { Grid, GridList, GridListTile, Paper, Button, FormGroup, GridListTileBar, Tooltip } from 'material-ui';
+import { Grid, GridList, Button } from 'material-ui';
 import { connect } from 'react-redux';
-import {fetchBatches, createBatch, fetchStudents, fetchBatchStudents, fetchBatch} from '../../actions/batches'
+import {fetchBatches, createBatch, fetchStudents, fetchBatchStudents, fetchBatch, fetchBatchEvaluations} from '../../actions/batches'
 import GroupAddIcon from '@material-ui/icons/GroupAdd';
 import DoneIcon from '@material-ui/icons/Done';
 import ClearIcon from '@material-ui/icons/Clear';
@@ -13,7 +13,6 @@ import Dialog, {
   DialogContentText,
   DialogTitle,
 } from 'material-ui/Dialog';
-import {Link} from 'react-router-dom'
 
 
 class BatchesPage extends PureComponent {
@@ -50,17 +49,17 @@ class BatchesPage extends PureComponent {
       this.props.createBatch(this.state)
   }
   handleClick = (e, b) => {
-    console.log(b)
     this.props.fetchBatchStudents(b.id)
+    this.props.fetchBatchEvaluations(b.id)
   }
   render() {
     const {batches} = this.props
     if(batches === null) return null
     return (
       <div>
-      <Grid style={{ flexGrow: 1, display: 'inline'}} direction={`row`} justify={`center`} alignItems={`center`} container spacing={12}>
+      <Grid style={{ flexGrow: 1, display: 'inline'}} direction={`row`} justify={`center`} alignItems={`center`} container spacing={16}>
         <GridList cellheight={120} cols={3} style={{ margin: '0 0 0 50px'}}>
-            {batches.map((b) => <Button style={{ width: 275, height: 275}} onClick={(e) => this.handleClick(e, b)}>{BatchCard(b)}</Button>)}
+            {batches.map((b) => <Button key={`button-${b.id}`} style={{ width: 275, height: 275}} onClick={(e) => this.handleClick(e, b)}>{BatchCard(b)}</Button>)}
             <Grid item>
           <Button variant='fab' color='secondary' 
           style={{position: "absolute", bottom: 20, right: 20}}
@@ -115,7 +114,6 @@ class BatchesPage extends PureComponent {
             name="endDate"
             required
             label="End Date"
-            type="end date"
             fullWidth
             type="date"
             InputLabelProps={{
@@ -147,4 +145,4 @@ const mapStateToProps = (state) => ({
   students: state.students === null ? null : state.students.sort(((a, b) => a.id - b.id)),
 })
 
-export default connect(mapStateToProps, {fetchBatches, createBatch, fetchStudents, fetchBatchStudents, fetchBatch})(BatchesPage)
+export default connect(mapStateToProps, {fetchBatches, createBatch, fetchStudents, fetchBatchStudents, fetchBatchEvaluations, fetchBatch})(BatchesPage)
