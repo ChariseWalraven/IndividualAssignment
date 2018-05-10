@@ -49,11 +49,11 @@ export class Student extends BaseEntity {
   /*
   note: I know that it's TypeORM convention to use 'type', but my linter complains that I'm not using the argument. 
   */
-  @OneToMany(_ => Evaluation, evaluation => evaluation.student)
+  @OneToMany(_ => Evaluation, evaluation => evaluation.student, {eager: true})
   @JoinColumn()
   evaluations: Evaluation[] 
 
-  @ManyToOne(_ => Batche, batch => batch.students)
+  @ManyToOne(_ => Batche, batch => batch.students, {eager: true, nullable: false})
   @JoinColumn()
   batch: Batche
 }
@@ -64,11 +64,14 @@ export class Evaluation extends BaseEntity {
   @PrimaryGeneratedColumn()
   id?: number
 
-  @ManyToOne(_ => Student, student => student.evaluations)
+  @ManyToOne(_ => Student, student => student.evaluations, { nullable: false})
   @JoinColumn()
   student: Student
 
-  @IsString()
+  @ManyToOne(_ => Batche, batch => batch.evaluations, {eager: true})
+  @JoinColumn()
+  batch: Batche
+
   @Column('text')
   remarks: string
 
@@ -81,6 +84,6 @@ export class Evaluation extends BaseEntity {
 
   async getDate(){
     let value = await new Date()
-    this.date = value.toLocaleDateString().split('/').reverse().join('/')
+    this.date = value.toLocaleDateString()
   }
 } 
