@@ -7,6 +7,7 @@ import DeleteIcon from '@material-ui/icons/Delete'
 import { Link } from 'react-router-dom'
 
 class StudentsCard extends PureComponent {
+  
   render() {
     let color ='rbga(0,0,0,0)'
     const {student} = this.props
@@ -16,12 +17,12 @@ class StudentsCard extends PureComponent {
       }
     }
     return (
-      <GridListTile style={{ height: 375 }}>
-          <Paper elevation={4} style={{ textAlign: 'center', height: 340, padding: 10 }}>
-          <IconButton variant='fab' aria-label="Delete" elevation={0}
+      <GridListTile style={{ height: 330 }}>
+          <Paper elevation={4} style={{ textAlign: 'center', height: 310, padding: 20 }}>
+          {/* <IconButton variant='fab' aria-label="Delete" elevation={0}
         style={{ position: 'relative', right: '35%'}}>
         <DeleteIcon/>
-        </IconButton>
+        </IconButton> */}
         <Link to={`/students/${student.id}`} className={'batch-card'}>
             <Typography variant='title'>{student.fullName}</ Typography >
             <Avatar src={student.photo} style={{ margin: 'auto', width: 200, height: 200 }} />

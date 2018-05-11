@@ -10,8 +10,8 @@ const BatchCard = ({ ...props }) => {
     <GridListTile>
         <Typography gutterBottom variant='display1'>{props.nickname}</ Typography >
         <Typography variant='title'>{`Batch #${props.number}`}</Typography>
-        <Typography gutterBottom variant='subheading'>{`Student Number`}</Typography>
         <Typography variant='caption'>{props.startDate} to {props.endDate}</Typography>
+        <Typography gutterBottom variant='caption'>{`Click to see number of students`}</Typography>
     </GridListTile>
     </Link>
   )

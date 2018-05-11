@@ -1,22 +1,40 @@
 import React, { PureComponent } from 'react'
 import { connect } from 'react-redux'
 import { fetchStudent, fetchStudentEvaluations, submitEvaluation } from '../../actions/batches'
-import EvaluationForm from './EvaluationForm'
-import { Grid, Typography, Avatar } from 'material-ui'
+import { Grid, Typography, Avatar, Button, TextField } from 'material-ui'
+import green from 'material-ui/colors/green'
+import yellow from 'material-ui/colors/yellow'
+import red from 'material-ui/colors/red'
 
 class EvaluationPage extends PureComponent {
+
+  getDate = () => {
+    const date = new Date()
+    return date.toJSON().slice(0, 10)
+  }
+
+  handleChange = (event) => {
+    const { name, value } = event.target
+    this.setState({
+      [name]: value
+    })
+  }
+
   state = {
     fullName: 'Jane Doe',
     batch: 999,
-    photo:  'https://cdn.vectorstock.com/i/thumb-large/98/21/woman-girl-female-hair-person-face-head-icon-vector-10189821.jpg'
+    photo:  'https://cdn.vectorstock.com/i/thumb-large/98/21/woman-girl-female-hair-person-face-head-icon-vector-10189821.jpg',
+    date: this.getDate()
+
   }
-  handleSubmit = (data) => {
+  handleSubmit = (e) => {
+    e.preventDefault()
     const id = Number(window.location.pathname.slice(10))
-    this.props.submitEvaluation(id, data)
-    this.props.fetchStudentEvaluations(id)
+    console.log(this.state, e)
+    this.props.submitEvaluation(id, this.state)
+    // this.props.fetchStudentEvaluations(id)
   }
 
-  handleCli
   componentWillMount(){
     const id = Number(window.location.pathname.slice(10))
     this.props.fetchStudent(id)
@@ -45,7 +63,47 @@ class EvaluationPage extends PureComponent {
           </Grid>
           <Grid item xs={8}>
             <Typography variant='headline'>Today's Evaluation</Typography>
-            <EvaluationForm onSubmit={this.handleSubmit} />
+            <form onSubmit={this.handleSubmit}>
+              <div>
+                {/* on click, set color to value */}
+                <Typography variant='caption'>
+                  Chosen Color: <span style={{ color: this.state.color }}>{this.state.color}</span>
+                </Typography>
+                <div>
+                  <Button value='green' name='color'
+                    variant='fab' mini onClick={this.handleChange}
+                    style={{ backgroundColor: green[500], margin: 5 }} />
+                  <Button value='yellow' name='color'
+                    variant='fab' mini onClick={this.handleChange}
+                    style={{ backgroundColor: yellow[500], margin: 5 }} />
+                  <Button value='red' name='color'
+                    variant='fab' mini onClick={this.handleChange}
+                    style={{ backgroundColor: red[400], margin: 5 }} />
+                </div>
+              </div>
+              <div>
+                <TextField
+                  type="date"
+                  name="date"
+                  id="date"
+                  value={
+                    this.state.date
+                  } onChange={this.handleChange} />
+              </div>
+              <div>
+                <TextField fullWidth
+                  label="Remarks"
+                  type="text"
+                  name="remarks"
+                  id="remarks"
+                  value={
+                    this.state.remarks || ''
+                  } onChange={this.handleChange} />
+              </div>
+
+              <Button style={{ left: '45%' }} type='submit' color="primary">Save</Button>
+              <Button style={{ left: '45%' }} value='next' color="secondary">Save And Next</Button>
+            </form>
           </Grid>
   
           <Grid item xs={12}>

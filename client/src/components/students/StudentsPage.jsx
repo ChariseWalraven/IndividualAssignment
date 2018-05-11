@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react'
 import StudentsCard from './StudentsCard.jsx'
-import { Grid, GridList, Button, Avatar, } from 'material-ui';
+import { Grid, GridList, Button, Avatar, Typography, } from 'material-ui';
 import { connect } from 'react-redux';
 import { fetchBatchStudents, fetchStudents, createStudent, fetchStudent } from '../../actions/batches'
 import PersonAddIcon from '@material-ui/icons/PersonAdd';
@@ -15,9 +15,6 @@ import Dialog, {
 } from 'material-ui/Dialog';
 import LiveHelpIcon from '@material-ui/icons/LiveHelp'
 import colorPicker from '../../logic/logic'
-
-
-
 
 class StudentsPage extends PureComponent {
   state = {
@@ -89,6 +86,7 @@ class StudentsPage extends PureComponent {
     return (
       <div>
         <Grid style={{ flexGrow: 1 }} direction='row' justify={`center`} alignItems={`center`} container >
+          <Typography style={{marginBottom: 10}} variant='title'>{this.props.students.length} Students</Typography>
           <Grid container spacing={24} direction='row' justify={`center`} alignItems={`center`} style={{ flexGrow: 1 }}>
             <Grid item xs={3} margin='normal'>
               <Button style={{ backgroundColor: 'green' }}>{this.props.percentages.green}</Button>

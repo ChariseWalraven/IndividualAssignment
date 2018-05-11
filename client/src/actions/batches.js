@@ -11,6 +11,7 @@ export const ADD_STUDENT = "ADD_STUDENT"
 export const FETCH_STUDENTS = "FETCH_STUDENTS"
 export const FETCH_STUDENT_EVALUATIONS = "FETCH_STUDENT_EVALUATIONS"
 export const FETCH_STUDENT = "FETCH_STUDENT"
+export const REMOVE_STUDENT = "REMOVE_STUDENT"
 export const FETCH_BATCH_STUDENTS = "FETCH_BATCH_STUDENTS"
 
 export const SUBMIT_EVALUATION = "SUBMIT_EVALUATION"
@@ -130,6 +131,19 @@ export const createStudent = (student, id) => (dispatch, getState) => {
     .send(student)
     .then(res => dispatch(addStudent(student)))
     .catch(err => console.error(err))
+}
+
+
+export const deleteStudent = (id) => (dispatch, getState) => {
+  const state = getState()
+  const jwt = state.currentUser.jwt
+
+  request
+    .set('Authorization', `Bearer ${jwt}`)
+    .delete(`${baseUrl}/students/${id}`)
+    .then(res => dispatch({
+      type: REMOVE_STUDENT
+    }))
 }
 
 export const fetchStudentEvaluations = (id) => (dispatch, getState) => {
