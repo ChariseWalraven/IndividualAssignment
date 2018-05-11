@@ -25,7 +25,7 @@ class BatchesPage extends PureComponent {
     //fetch batches
     if(this.props.authenticated){
         // this.props.fetchBatch(this.state.id)
-      if (this.props.batches === null) {
+      if (this.props.batch === null) {
         this.props.fetchBatches()
       }
     }

@@ -5,10 +5,14 @@ import yellow from 'material-ui/colors/yellow'
 import red from 'material-ui/colors/red'
 
 export default class EvaluationForm extends PureComponent {
-  state = { }
 
-  next = () => {
-
+  getDate =() => {
+    const date = new Date()
+    return date.toJSON().slice(0,10)
+  }
+  
+  state = {
+    date: this.getDate()
   }
   
   handleSubmit = (e) => {
@@ -26,6 +30,7 @@ export default class EvaluationForm extends PureComponent {
   }
 
   render() {
+    console.log(this.getDate())
     return (
       <form onSubmit={this.handleSubmit}>
         <div>
@@ -51,7 +56,7 @@ export default class EvaluationForm extends PureComponent {
             name="date"
             id="date"
             value={
-              this.state.date || ''
+              this.state.date
             } onChange={this.handleChange} />
         </div>
         <div>
