@@ -29,14 +29,12 @@ export const addStudent = student => ({
   payload: student
 })
 
-export const deleteStudent = student => ({
-  type: DELETE_STUDENT,
-  payload: student
-})
-
 export const fetchBatches = () => (dispatch, getState) => {
   const state = getState()
+  if (!state.currentUser) return null
   const jwt = state.currentUser.jwt
+
+  if (isExpired(jwt)) return dispatch(logout())
 
   request
     .get(`${baseUrl}/batches`)
@@ -49,7 +47,10 @@ export const fetchBatches = () => (dispatch, getState) => {
 }
 export const fetchBatch = (id) => (dispatch, getState) => {
   const state = getState()
+  if (!state.currentUser) return null
   const jwt = state.currentUser.jwt
+
+  if (isExpired(jwt)) return dispatch(logout())
 
   request
     .get(`${baseUrl}/batches/${id}`)
@@ -76,7 +77,10 @@ export const createBatch = (batch) => (dispatch, getState) => {
 
 export const fetchStudents = () => (dispatch, getState) => {
   const state = getState()
+  if (!state.currentUser) return null
   const jwt = state.currentUser.jwt
+
+  if (isExpired(jwt)) return dispatch(logout())
 
   request
     .get(`${baseUrl}/students`)
@@ -89,7 +93,10 @@ export const fetchStudents = () => (dispatch, getState) => {
 }
 export const fetchStudent = (id) => (dispatch, getState) => {
   const state = getState()
+  if (!state.currentUser) return null
   const jwt = state.currentUser.jwt
+
+  if (isExpired(jwt)) return dispatch(logout())
 
   request
     .get(`${baseUrl}/students/${id}`)
@@ -102,7 +109,11 @@ export const fetchStudent = (id) => (dispatch, getState) => {
 }
 export const fetchBatchStudents = (id) => (dispatch, getState) => {
   const state = getState()
+  if (!state.currentUser) return null
   const jwt = state.currentUser.jwt
+
+  if (isExpired(jwt)) return dispatch(logout())
+
   request
     .get(`${baseUrl}/batches/${id}/students`)
     .set('Authorization', `Bearer ${jwt}`)
@@ -117,6 +128,8 @@ export const fetchBatchEvaluations = (id) => (dispatch, getState) => {
   const state = getState()
   if (!state.currentUser) return null
   const jwt = state.currentUser.jwt
+
+  if (isExpired(jwt)) return dispatch(logout())
   
   request
     .get(`${baseUrl}/batches/${id}/evaluations`)
@@ -130,8 +143,10 @@ export const fetchBatchEvaluations = (id) => (dispatch, getState) => {
 
 export const createStudent = (student, id) => (dispatch, getState) => {
   const state = getState()
+  if (!state.currentUser) return null
   const jwt = state.currentUser.jwt
-  // if (isExpired(jwt)) return dispatch(logout())
+
+  if (isExpired(jwt)) return dispatch(logout())
 
   request
     .post(`${baseUrl}/students`)
@@ -141,15 +156,29 @@ export const createStudent = (student, id) => (dispatch, getState) => {
     .catch(err => console.error(err))
 }
 
-export const removeStudent = () => (dispatch, getState) => {
+export const deleteStudent = (id) => (dispatch, getState) => {
   const state = getState()
+  if (!state.currentUser) return null
   const jwt = state.currentUser.jwt
-  // if (isExpired(jwt)) return dispatch(logout())
+
+  if (isExpired(jwt)) return dispatch(logout())
+
+  request
+  .delete(`${baseUrl}/students/${id}`)
+  .set('Authorization', `Bearer ${jwt}`)
+    .then(res => 
+      dispatch({
+      type: DELETE_STUDENT,
+      payload: res.body.student
+    }))
 }
 
 export const fetchStudentEvaluations = (id) => (dispatch, getState) => {
   const state = getState()
+  if (!state.currentUser) return null
   const jwt = state.currentUser.jwt
+
+  if (isExpired(jwt)) return dispatch(logout())
 
   request
     .get(`${baseUrl}/students/${id}/evaluations`)
@@ -162,7 +191,11 @@ export const fetchStudentEvaluations = (id) => (dispatch, getState) => {
 
 export const submitEvaluation = (id, data) => (dispatch, getState) => {
   const state = getState()
+  if (!state.currentUser) return null
   const jwt = state.currentUser.jwt
+
+  if (isExpired(jwt)) return dispatch(logout())
+
   request
   .post(`${baseUrl}/students/${id}/evaluations`)
   .set('Authorization', `Bearer ${jwt}`)
