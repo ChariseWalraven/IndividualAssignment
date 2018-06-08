@@ -95,7 +95,8 @@ export class StudentController {
     const student = await Student.findOne(id)
     if (!student) throw new NotFoundError('User doesn\'t exist')
     if (student) Student.remove(student)
-    return 'successfully deleted'
+
+    return { student }
   }
 }
 

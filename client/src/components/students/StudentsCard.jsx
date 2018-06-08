@@ -19,7 +19,7 @@ class StudentsCard extends PureComponent {
       <GridListTile style={{ height: 375 }}>
           <Paper elevation={4} style={{ textAlign: 'center', height: 340, padding: 10 }}>
           <IconButton variant='fab' aria-label="Delete" elevation={0}
-        style={{ position: 'relative', right: '35%'}}>
+        style={{ position: 'relative', right: '35%'}} onClick={() => this.props.deleteStudent(student.id)}>
         <DeleteIcon/>
         </IconButton>
         <Link to={`/students/${student.id}`} className={'batch-card'}>

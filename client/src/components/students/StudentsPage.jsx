@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react'
 import StudentsCard from './StudentsCard.jsx'
 import { Grid, GridList, Button, Avatar, } from 'material-ui';
 import { connect } from 'react-redux';
-import { fetchBatchStudents, fetchStudents, createStudent, fetchStudent } from '../../actions/batches'
+import { fetchBatchStudents, fetchStudents, createStudent, fetchStudent, deleteStudent } from '../../actions/batches'
 import PersonAddIcon from '@material-ui/icons/PersonAdd';
 import DoneIcon from '@material-ui/icons/Done';
 import ClearIcon from '@material-ui/icons/Clear';
@@ -101,7 +101,7 @@ class StudentsPage extends PureComponent {
             </Grid>
           </Grid>
           <GridList cols={3} style={{ margin: '0 0 0 50px', height: 600 }} spacing={40}>
-            {students.map((s, i) => <StudentsCard key={'student-' + i} student={s} />)}
+            {students.map((s, i) => <StudentsCard key={'student-' + i} student={s} deleteStudent={this.props.deleteStudent}/>)}
           </ GridList>
 
           <Grid item>
@@ -200,4 +200,4 @@ const mapStateToProps = (state) => ({
   evaluations: state.evaluations
 })
 
-export default connect(mapStateToProps, { fetchBatchStudents, fetchStudents, createStudent, fetchStudent })(StudentsPage)
+export default connect(mapStateToProps, { fetchBatchStudents, fetchStudents, createStudent, fetchStudent, deleteStudent })(StudentsPage)
