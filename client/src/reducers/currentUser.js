@@ -1,11 +1,16 @@
 import { USER_LOGIN_SUCCESS, USER_LOGOUT } from '../actions/users'
-import { localStorageJwtKey } from '../constants'
+import { jwtSecret, localStorageJwtKey } from '../constants'
+import * as jwt from 'jsonwebtoken'
+
 
 let initialState = null
+
 try {
-  const jwt = localStorage.getItem(localStorageJwtKey)
+  const jwtToken = localStorage.getItem(localStorageJwtKey)
+  const teacher = jwt.verify(jwtToken, jwtSecret)
+
   if (jwt) {
-    initialState = { jwt }
+    initialState = { jwt: jwtToken, teacher }
   }
 }
 catch (e) {

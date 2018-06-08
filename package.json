@@ -1,0 +1,7 @@
+{
+  "scripts": {
+    "install": "cd server && yarn && cd ../client && yarn && cd ../ && nodemon ./server/. --inspect",
+    "start": "cd client && yarn start",
+    "compile": "cd server && tsc"
+  }
+}

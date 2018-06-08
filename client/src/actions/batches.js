@@ -7,11 +7,13 @@ export const FETCH_BATCHES = "FETCH_BATCHES"
 export const FETCH_BATCH = "FETCH_BATCH"
 export const CREATE_BATCH = "CREATE_BATCH"
 export const ADD_BATCH = "ADD_BATCH"
+export const FETCH_BATCH_STUDENTS = "FETCH_BATCH_STUDENTS"
+
 export const ADD_STUDENT = "ADD_STUDENT"
+export const DELETE_STUDENT = "DELETE_STUDENT"
 export const FETCH_STUDENTS = "FETCH_STUDENTS"
 export const FETCH_STUDENT_EVALUATIONS = "FETCH_STUDENT_EVALUATIONS"
 export const FETCH_STUDENT = "FETCH_STUDENT"
-export const FETCH_BATCH_STUDENTS = "FETCH_BATCH_STUDENTS"
 
 export const SUBMIT_EVALUATION = "SUBMIT_EVALUATION"
 export const FETCH_BATCH_EVALUATIONS = "FETCH_BATCH_EVALUATIONS"
@@ -24,6 +26,11 @@ export const addBatch = batch => ({
 
 export const addStudent = student => ({
   type: ADD_STUDENT,
+  payload: student
+})
+
+export const deleteStudent = student => ({
+  type: DELETE_STUDENT,
   payload: student
 })
 
@@ -108,7 +115,9 @@ export const fetchBatchStudents = (id) => (dispatch, getState) => {
 
 export const fetchBatchEvaluations = (id) => (dispatch, getState) => {
   const state = getState()
+  if (!state.currentUser) return null
   const jwt = state.currentUser.jwt
+  
   request
     .get(`${baseUrl}/batches/${id}/evaluations`)
     .set('Authorization', `Bearer ${jwt}`)
@@ -128,8 +137,14 @@ export const createStudent = (student, id) => (dispatch, getState) => {
     .post(`${baseUrl}/students`)
     .set('Authorization', `Bearer ${jwt}`)
     .send(student)
-    .then(res => dispatch(addStudent(student)))
+    .then(dispatch(addStudent(student)))
     .catch(err => console.error(err))
+}
+
+export const removeStudent = () => (dispatch, getState) => {
+  const state = getState()
+  const jwt = state.currentUser.jwt
+  // if (isExpired(jwt)) return dispatch(logout())
 }
 
 export const fetchStudentEvaluations = (id) => (dispatch, getState) => {
